@@ -14,7 +14,8 @@ public sealed class ClassificadorMaoPoker
             .OrderDescending()
             .ToArray();
         var ehFlush = cartas.All(carta => carta.Naipe == cartas[0].Naipe);
-        var ehSequencia = valores[^1] - valores[0] == MaoPoker.QuantidadeCartas - 1;
+        var ehSequencia = valores.Distinct().Count() == MaoPoker.QuantidadeCartas
+            && valores[^1] - valores[0] == MaoPoker.QuantidadeCartas - 1;
 
         if (ehFlush && ehSequencia)
         {

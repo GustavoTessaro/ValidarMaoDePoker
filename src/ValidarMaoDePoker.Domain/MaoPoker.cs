@@ -18,6 +18,11 @@ public sealed class MaoPoker
             throw new ArgumentException("Uma mão de Poker deve conter exatamente cinco cartas.", nameof(cartas));
         }
 
+        if (copia.Any(carta => carta is null))
+        {
+            throw new ArgumentException("Uma mão não pode conter cartas nulas.", nameof(cartas));
+        }
+
         if (copia.Distinct().Count() != QuantidadeCartas)
         {
             throw new ArgumentException("Uma mão não pode conter cartas repetidas.", nameof(cartas));

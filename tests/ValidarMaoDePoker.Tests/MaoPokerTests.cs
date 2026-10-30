@@ -17,6 +17,14 @@ public sealed class MaoPokerTests
     }
 
     [TestMethod]
+    public void Parse_AceitaEspacosAdicionaisAoRedorEDentroDaEntrada()
+    {
+        var mao = MaoPoker.Parse("  5C   5P  6E 7P   KO  ");
+
+        Assert.HasCount(5, mao.Cartas);
+    }
+
+    [TestMethod]
     [DataRow("5C 5P 6E 7P")]
     [DataRow("5C 5P 6E 7P KO 2O")]
     public void Parse_RejeitaQuantidadeIncorretaDeCartas(string texto)
@@ -78,5 +86,29 @@ public sealed class MaoPokerTests
         cartas.Clear();
 
         Assert.HasCount(5, mao.Cartas);
+    }
+
+    [TestMethod]
+    public void Construtor_RejeitaCartaNula()
+    {
+        var cartas = new Carta[]
+        {
+            default!,
+            Carta.Parse("5P"),
+            Carta.Parse("6E"),
+            Carta.Parse("7P"),
+            Carta.Parse("KO")
+        };
+
+        Assert.ThrowsExactly<ArgumentException>(() => new MaoPoker(cartas));
+    }
+
+    [TestMethod]
+    public void Mao_ImpedeAlteracaoDaColecaoExposta()
+    {
+        var mao = MaoPoker.Parse("5C 5P 6E 7P KO");
+        var cartas = (IList<Carta>)mao.Cartas;
+
+        Assert.ThrowsExactly<NotSupportedException>(() => cartas.Clear());
     }
 }

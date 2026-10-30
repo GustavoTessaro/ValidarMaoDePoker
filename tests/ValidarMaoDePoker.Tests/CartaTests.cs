@@ -50,6 +50,26 @@ public sealed class CartaTests
     }
 
     [TestMethod]
+    public void Construtor_RejeitaValorDeEnumInvalido()
+    {
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(
+            () => new Carta((ValorCarta)1, Naipe.Copas));
+    }
+
+    [TestMethod]
+    public void Construtor_RejeitaNaipeDeEnumInvalido()
+    {
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(
+            () => new Carta(ValorCarta.As, (Naipe)4));
+    }
+
+    [TestMethod]
+    public void AsValeQuatorze()
+    {
+        Assert.AreEqual(14, (int)Carta.Parse("AC").Valor);
+    }
+
+    [TestMethod]
     public void Parse_RejeitaValorInvalido()
     {
         Assert.ThrowsExactly<FormatException>(() => Carta.Parse("1C"));

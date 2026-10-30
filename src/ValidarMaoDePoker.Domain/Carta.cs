@@ -1,6 +1,6 @@
 namespace ValidarMaoDePoker.Domain;
 
-public readonly record struct Carta
+public sealed record Carta
 {
     public Carta(ValorCarta valor, Naipe naipe)
     {

@@ -83,9 +83,33 @@ public sealed class ComparadorMaoPokerTests
     }
 
     [TestMethod]
+    public void Comparar_ParDesempataNoSegundoKickerQuandoOPrimeiroEmpata()
+    {
+        var resultado = Comparar("5C 5P KC QO 4C", "5E 5O KE JE 4P");
+
+        Assert.AreEqual(VencedorComparacao.Jogador1, resultado.Vencedor);
+    }
+
+    [TestMethod]
+    public void Comparar_ParDesempataNoTerceiroKickerQuandoOsDoisPrimeirosEmpatam()
+    {
+        var resultado = Comparar("5C 5P KC QO 4C", "5E 5O KE QP 3C");
+
+        Assert.AreEqual(VencedorComparacao.Jogador1, resultado.Vencedor);
+    }
+
+    [TestMethod]
     public void Comparar_DoisParesComParMaiorIgualDesempataPeloParMenor()
     {
         var resultado = Comparar("9C 9P 5E 5O KO", "9E 9O 4C 4P AC");
+
+        Assert.AreEqual(VencedorComparacao.Jogador1, resultado.Vencedor);
+    }
+
+    [TestMethod]
+    public void Comparar_DoisParesDesempataPeloParMaior()
+    {
+        var resultado = Comparar("9C 9P 4C 4P 2C", "8C 8P 7C 7P AO");
 
         Assert.AreEqual(VencedorComparacao.Jogador1, resultado.Vencedor);
     }
@@ -155,6 +179,14 @@ public sealed class ComparadorMaoPokerTests
     }
 
     [TestMethod]
+    public void Comparar_CartaAltaUsaKickerFinalQuandoOsQuatroPrimeirosEmpatam()
+    {
+        var resultado = Comparar("AO KC QE JP 4C", "AE KO QC JE 3P");
+
+        Assert.AreEqual(VencedorComparacao.Jogador1, resultado.Vencedor);
+    }
+
+    [TestMethod]
     public void Comparar_ValoresIguaisComNaipesDiferentesResultaEmEmpate()
     {
         var resultado = Comparar("AC KO 9E 7P 4C", "AE KC 9O 7E 4P");
@@ -198,12 +230,56 @@ public sealed class ComparadorMaoPokerTests
     }
 
     [TestMethod]
+    public void Comparar_SequenciaEmpataComMesmosValoresEmNaipesDiferentes()
+    {
+        var resultado = Comparar("2C 3P 4E 5O 6C", "2E 3O 4C 5P 6E");
+
+        Assert.AreEqual(VencedorComparacao.Empate, resultado.Vencedor);
+    }
+
+    [TestMethod]
+    public void Comparar_StraightFlushEmpataComMesmosValoresEmNaipesDiferentes()
+    {
+        var resultado = Comparar("2C 3C 4C 5C 6C", "2P 3P 4P 5P 6P");
+
+        Assert.AreEqual(VencedorComparacao.Empate, resultado.Vencedor);
+    }
+
+    [TestMethod]
     public void Comparar_RejeitaMaosNulas()
     {
         Assert.ThrowsExactly<ArgumentNullException>(() =>
             comparador.Comparar(null!, MaoPoker.Parse("2C 3P 4E 5O 6C")));
         Assert.ThrowsExactly<ArgumentNullException>(() =>
             comparador.Comparar(MaoPoker.Parse("2C 3P 4E 5O 6C"), null!));
+    }
+
+    [TestMethod]
+    public void Resultado_RejeitaClassificacoesEValoresDeVencedorInvalidos()
+    {
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+            new ResultadoComparacaoMaoPoker(
+                (ClassificacaoMaoPoker)0,
+                ClassificacaoMaoPoker.CartaAlta,
+                VencedorComparacao.Empate));
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+            new ResultadoComparacaoMaoPoker(
+                ClassificacaoMaoPoker.CartaAlta,
+                (ClassificacaoMaoPoker)11,
+                VencedorComparacao.Empate));
+        Assert.ThrowsExactly<ArgumentOutOfRangeException>(() =>
+            new ResultadoComparacaoMaoPoker(
+                ClassificacaoMaoPoker.CartaAlta,
+                ClassificacaoMaoPoker.CartaAlta,
+                (VencedorComparacao)3));
+    }
+
+    [TestMethod]
+    public void Resultado_PropriedadesNaoPossuemSetters()
+    {
+        var propriedades = typeof(ResultadoComparacaoMaoPoker).GetProperties();
+
+        Assert.IsTrue(propriedades.All(propriedade => propriedade.SetMethod is null));
     }
 
     private ResultadoComparacaoMaoPoker Comparar(string textoJogador1, string textoJogador2)
