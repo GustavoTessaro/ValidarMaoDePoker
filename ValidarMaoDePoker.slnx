@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ValidarMaoDePoker.Domain/ValidarMaoDePoker.Domain.csproj" />
+    <Project Path="src/ValidarMaoDePoker.WinForms/ValidarMaoDePoker.WinForms.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ValidarMaoDePoker.Tests/ValidarMaoDePoker.Tests.csproj" />
+  </Folder>
+</Solution>
