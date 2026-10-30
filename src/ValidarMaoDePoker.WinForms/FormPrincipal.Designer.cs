@@ -5,12 +5,19 @@ partial class FormPrincipal
     private static readonly Color Fundo = Color.FromArgb(18, 24, 22);
     private static readonly Color FundoCartao = Color.FromArgb(29, 38, 35);
     private static readonly Color FundoCampo = Color.FromArgb(14, 19, 17);
+    private static readonly Color FundoCampoErro = Color.FromArgb(67, 35, 35);
     private static readonly Color Verde = Color.FromArgb(52, 211, 153);
     private static readonly Color TextoPrincipal = Color.FromArgb(240, 245, 242);
     private static readonly Color TextoSecundario = Color.FromArgb(163, 177, 170);
+    private static readonly Color CorErro = Color.FromArgb(255, 139, 139);
 
     private TextBox campoCartasJogador1 = null!;
     private TextBox campoCartasJogador2 = null!;
+    private Label classificacaoJogador1 = null!;
+    private Label classificacaoJogador2 = null!;
+    private Label valorResultado = null!;
+    private Label mensagemResultado = null!;
+    private Button botaoComparar = null!;
     private Button botaoLimpar = null!;
 
     private void InitializeComponent()
@@ -102,13 +109,15 @@ partial class FormPrincipal
         var cartaoJogador1 = CriarCartaoJogador(
             "JOGADOR 1",
             "Informe as cartas da primeira mão.",
-            out campoCartasJogador1);
+            out campoCartasJogador1,
+            out classificacaoJogador1);
         cartaoJogador1.Margin = new Padding(0, 0, 10, 0);
 
         var cartaoJogador2 = CriarCartaoJogador(
             "JOGADOR 2",
             "Informe as cartas da segunda mão.",
-            out campoCartasJogador2);
+            out campoCartasJogador2,
+            out classificacaoJogador2);
         cartaoJogador2.Margin = new Padding(10, 0, 0, 0);
 
         painel.Controls.Add(cartaoJogador1, 0, 0);
@@ -116,7 +125,11 @@ partial class FormPrincipal
         return painel;
     }
 
-    private Control CriarCartaoJogador(string jogador, string descricao, out TextBox campoCartas)
+    private Control CriarCartaoJogador(
+        string jogador,
+        string descricao,
+        out TextBox campoCartas,
+        out Label classificacao)
     {
         var cartao = new TableLayoutPanel
         {
@@ -179,9 +192,9 @@ partial class FormPrincipal
 
         var tituloClassificacao = CriarLabel("CLASSIFICAÇÃO", 8F, TextoSecundario, FontStyle.Bold);
         tituloClassificacao.Margin = new Padding(0, 0, 0, 5);
-        var valorClassificacao = CriarLabel("Disponível na próxima etapa", 10F, TextoSecundario);
+        classificacao = CriarLabel("Aguardando comparação", 10F, TextoSecundario);
         painelClassificacao.Controls.Add(tituloClassificacao, 0, 0);
-        painelClassificacao.Controls.Add(valorClassificacao, 0, 1);
+        painelClassificacao.Controls.Add(classificacao, 0, 1);
 
         cartao.Controls.Add(titulo, 0, 0);
         cartao.Controls.Add(textoDescricao, 0, 1);
@@ -204,10 +217,10 @@ partial class FormPrincipal
             Padding = Padding.Empty
         };
 
-        var botaoComparar = new Button
+        botaoComparar = new Button
         {
             Text = "Comparar mãos",
-            Enabled = false,
+            Enabled = true,
             Width = 172,
             Height = 44,
             FlatStyle = FlatStyle.Flat,
@@ -249,23 +262,28 @@ partial class FormPrincipal
             AutoSize = true,
             BackColor = Color.FromArgb(23, 45, 36),
             ColumnCount = 1,
-            RowCount = 2,
+            RowCount = 3,
             Padding = new Padding(18, 14, 18, 14),
             Margin = new Padding(0, 0, 0, 18)
         };
         painel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
         painel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         painel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+        painel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
         var titulo = CriarLabel("RESULTADO", 8F, Verde, FontStyle.Bold);
         titulo.Margin = new Padding(0, 0, 0, 4);
+        valorResultado = CriarLabel("Resultado ainda não disponível", 13F, TextoPrincipal, FontStyle.Bold);
+        valorResultado.Margin = new Padding(0, 0, 0, 4);
         var mensagem = CriarLabel(
-            "O resultado será apresentado quando a comparação for integrada.",
+            "Informe as duas mãos e selecione Comparar mãos.",
             10F,
             TextoSecundario);
 
         painel.Controls.Add(titulo, 0, 0);
-        painel.Controls.Add(mensagem, 0, 1);
+        painel.Controls.Add(valorResultado, 0, 1);
+        painel.Controls.Add(mensagem, 0, 2);
+        mensagemResultado = mensagem;
         return painel;
     }
 
