@@ -35,8 +35,6 @@ A solução separa as **regras de negócio** da **interface gráfica** e conta c
 
 ## 🖼️ Interface da aplicação
 
-> Para que as imagens apareçam no GitHub, salve as capturas na pasta `docs/images/` com os nomes indicados abaixo e inclua esses arquivos no repositório.
-
 <details>
 <summary><strong>📸 Ver capturas da aplicação</strong></summary>
 
