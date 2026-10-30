@@ -69,18 +69,25 @@ public partial class FormPrincipal : Form
 
         classificacaoJogador1.Text = resultado.ClassificacaoJogador1.NomeEmPortugues();
         classificacaoJogador2.Text = resultado.ClassificacaoJogador2.NomeEmPortugues();
-        (valorResultado.Text, mensagemResultado.Text) = resultado.Vencedor switch
+        var mesmaClassificacao = resultado.ClassificacaoJogador1 == resultado.ClassificacaoJogador2;
+        (valorResultado.Text, mensagemResultado.Text) = (resultado.Vencedor, mesmaClassificacao) switch
         {
-            VencedorComparacao.Jogador1 => (
+            (VencedorComparacao.Jogador1, false) => (
                 "Jogador 1 venceu",
-                "A mão do Jogador 1 tem a melhor classificação."),
-            VencedorComparacao.Jogador2 => (
+                "O Jogador 1 possui uma classificação superior."),
+            (VencedorComparacao.Jogador2, false) => (
                 "Jogador 2 venceu",
-                "A mão do Jogador 2 tem a melhor classificação."),
-            VencedorComparacao.Empate => (
+                "O Jogador 2 possui uma classificação superior."),
+            (VencedorComparacao.Jogador1, true) => (
+                "Jogador 1 venceu",
+                "O Jogador 1 venceu pelos critérios de desempate, considerando os valores das cartas."),
+            (VencedorComparacao.Jogador2, true) => (
+                "Jogador 2 venceu",
+                "O Jogador 2 venceu pelos critérios de desempate, considerando os valores das cartas."),
+            (VencedorComparacao.Empate, _) => (
                 "Empate",
                 "As mãos têm o mesmo valor segundo as regras de comparação."),
-            _ => throw new InvalidOperationException("O domínio retornou um vencedor inválido.")
+            _ => throw new InvalidOperationException("O domínio retornou um resultado de comparação inválido.")
         };
         mensagemResultado.ForeColor = TextoSecundario;
     }

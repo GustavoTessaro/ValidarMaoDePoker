@@ -136,7 +136,7 @@ partial class FormPrincipal
             Dock = DockStyle.Fill,
             BackColor = FundoCartao,
             ColumnCount = 1,
-            RowCount = 7,
+            RowCount = 6,
             Padding = new Padding(22),
             Margin = Padding.Empty
         };
@@ -146,14 +146,13 @@ partial class FormPrincipal
         cartao.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         cartao.RowStyles.Add(new RowStyle(SizeType.AutoSize));
         cartao.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-        cartao.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
         cartao.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
         var titulo = CriarLabel(jogador, 11F, Verde, FontStyle.Bold);
         titulo.Margin = new Padding(0, 0, 0, 5);
 
         var textoDescricao = CriarLabel(descricao, 9.5F, TextoSecundario);
-        textoDescricao.Margin = new Padding(0, 0, 0, 20);
+        textoDescricao.Margin = new Padding(0, 0, 0, 16);
 
         var rotuloCampo = CriarLabel("Cartas da mão", 9F, TextoPrincipal, FontStyle.Bold);
         rotuloCampo.Margin = new Padding(0, 0, 0, 7);
@@ -174,7 +173,7 @@ partial class FormPrincipal
         campoCartas.AccessibleName = $"Cartas de {jogador.ToLowerInvariant()}";
 
         var dica = CriarLabel("Cinco cartas separadas por espaços.", 8.5F, TextoSecundario);
-        dica.Margin = new Padding(0, 0, 0, 22);
+        dica.Margin = new Padding(0, 0, 0, 12);
 
         var painelClassificacao = new TableLayoutPanel
         {
@@ -184,7 +183,7 @@ partial class FormPrincipal
             RowCount = 2,
             BackColor = FundoCartao,
             Margin = Padding.Empty,
-            Padding = new Padding(0, 14, 0, 0)
+            Padding = new Padding(0, 10, 0, 0)
         };
         painelClassificacao.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
         painelClassificacao.RowStyles.Add(new RowStyle(SizeType.AutoSize));
@@ -201,7 +200,7 @@ partial class FormPrincipal
         cartao.Controls.Add(rotuloCampo, 0, 2);
         cartao.Controls.Add(campoCartas, 0, 3);
         cartao.Controls.Add(dica, 0, 4);
-        cartao.Controls.Add(painelClassificacao, 0, 6);
+        cartao.Controls.Add(painelClassificacao, 0, 5);
         return cartao;
     }
 
